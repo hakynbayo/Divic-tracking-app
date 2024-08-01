@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* #region  /**=========== Typography =========== */
+  .h0 {
+    @apply font-inter text-3xl font-bold md:text-5xl;
+  }
+
+  h1,
+  .h1 {
+    @apply font-inter text-2xl font-bold md:text-4xl;
+  }
+
+  h2,
+  .h2 {
+    @apply font-inter text-xl font-bold md:text-3xl;
+  }
+
+  h3,
+  .h3 {
+    @apply font-inter text-lg font-bold md:text-lg;
+  }
+
+  h4,
+  .h4 {
+    @apply font-inter text-base font-bold md:text-lg;
+  }
+
+  body,
+  .p {
+    @apply font-inter text-sm md:text-base;
+  }
+  /* #endregion  /**======== Typography =========== */
+
+  .layout {
+    /* 1100px */
+    max-width: 68.75rem;
+    @apply mx-auto w-11/12;
+  }
+
+  .bg-dark a.custom-link {
+    @apply border-gray-200 hover:border-gray-200/0;
+  }
+
+  /* Class to adjust with sticky footer */
+  .min-h-main {
+    @apply min-h-[calc(100vh-56px)];
+  }
+}
+
+@layer utilities {
+  .animated-underline {
+    background-image: linear-gradient(#33333300, #33333300),
+      linear-gradient(to right, #3a284d40, #3a284d50);
+    background-size: 100% 2px, 0 2px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .animated-underline {
+      transition: 0.3s ease;
+      transition-property: background-size, color, background-color,
+        border-color;
+    }
+  }
+  .animated-underline:hover,
+  .animated-underline:focus-visible {
+    background-size: 0 2px, 100% 2px;
+  }
+}
+
+html,
+body,
+#__next {
+  @apply h-full w-full;
+}
+
+:root {
+  --primary: #ffffff;
+  --secondary: #3a284d;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 14px;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.no-scrollbar {
+  overflow: -moz-scrollbars-none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Edge and IE */
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit-based browsers */
+}
+
+.pac-container:after {
+  /* Disclaimer: not needed to show 'powered by Google' if also a Google Map is shown */
+
+  background-image: none !important;
+  height: 0px;
+}
+
+.ReactCrop__child-wrapper {
+  height: 100%;
+}
+
+/* *,
+*::after,
+*::before {
+  outline: 1px solid red !important;
+} */
