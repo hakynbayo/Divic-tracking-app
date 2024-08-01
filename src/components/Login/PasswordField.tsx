@@ -26,7 +26,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({ label, name, placeholder,
                         type={showPassword ? 'text' : 'password'}
                         placeholder={placeholder}
                         {...register(name, { required: true })}
-                        className='border rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
+                        className='border outline-light-blue rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
                     />
                     <div
                         className='absolute right-3 top-[60%] transform -translate-y-1/2 cursor-pointer'

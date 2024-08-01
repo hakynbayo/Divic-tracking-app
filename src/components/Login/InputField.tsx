@@ -21,7 +21,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, name, type, placeholder,
                 type={type}
                 placeholder={placeholder}
                 {...register(name, { required: true })}
-                className='border rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
+                className='border rounded-lg outline-light-blue border-secondary p-4 pl-10 mt-2 w-full'
             />
         </div>
         {error && <span className='text-red-500 text-left'>{label} is required</span>}

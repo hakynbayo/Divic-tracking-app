@@ -29,6 +29,7 @@ const LoginPage: React.FC = () => {
     const onSubmit = async (data: LoginFormInputs) => {
         setLoading(true);
         try {
+            console.log('Sending request...');
             const response = await fetch(import.meta.env.VITE_API_URL || '', {
                 method: 'POST',
                 headers: {
@@ -45,9 +46,10 @@ const LoginPage: React.FC = () => {
             }
 
             const result = await response.json();
-            console.log(result);
+            console.log('Response received:', result);
 
             toast.success('Sign in successful!');
+            console.log('Toast success should be displayed');
             login();
             navigate('/home');
         } catch (error) {
@@ -65,7 +67,7 @@ const LoginPage: React.FC = () => {
                 <Logo />
             </div>
 
-            <div className='w-full flex flex-col justify-center gap-2 items-center min-h-[80vh]'>
+            <div className='w-full flex flex-col justify-center gap-2 items-center min-h-[70vh]'>
                 <h1 className='text-2xl font-bold text-center'>Sign in</h1>
                 <p className='text-gray'>Don’t have an account yet? <span className='text-blue font-semibold'>sign up here</span></p>
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full sm:w-[50%] lg:w-[30%] px-8 lg:px-2 flex flex-col gap-2 items-center mt-2'>
