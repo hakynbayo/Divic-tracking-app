@@ -20,11 +20,17 @@ const InputField: React.FC<InputFieldProps> = ({ label, name, type, placeholder,
             <input
                 type={type}
                 placeholder={placeholder}
-                {...register(name, { required: true })}
-                className='border rounded-lg outline-light-blue border-secondary p-4 pl-10 mt-2 w-full'
+                {...register(name, {
+                    required: `${label} is required`,
+                    pattern: type === 'email' ? {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: 'Please enter a valid email address',
+                    } : undefined,
+                })}
+                className={`border outline-light-blue rounded-lg border-secondary p-4 pl-10 mt-2 w-full ${error ? 'border-red-500' : 'border-secondary'}`}
             />
         </div>
-        {error && <span className='text-red-500 text-left'>{label} is required</span>}
+        {error && <span className='text-red-500 text-left'>{error.message}</span>}
     </label>
 );
 

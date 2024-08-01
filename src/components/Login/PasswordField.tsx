@@ -25,8 +25,18 @@ const PasswordField: React.FC<PasswordFieldProps> = ({ label, name, placeholder,
                     <input
                         type={showPassword ? 'text' : 'password'}
                         placeholder={placeholder}
-                        {...register(name, { required: true })}
-                        className='border outline-light-blue rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
+                        {...register(name, {
+                            required: 'Password is required',
+                            minLength: {
+                                value: 8,
+                                message: 'Password must be at least 8 characters long',
+                            },
+                            pattern: {
+                                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                message: 'Password must contain a number, a special character, and at least 8 characters',
+                            },
+                        })}
+                        className={`border outline-light-blue rounded-lg border-secondary p-4 pl-10 mt-2 w-full ${error ? 'border-red-500' : 'border-secondary'}`}
                     />
                     <div
                         className='absolute right-3 top-[60%] transform -translate-y-1/2 cursor-pointer'
@@ -35,7 +45,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({ label, name, placeholder,
                         {showPassword ? <LuEyeOff className='text-gray-400' /> : <LuEye className='text-gray-400' />}
                     </div>
                 </div>
-                {error && <span className='text-red-500 text-left'>{label} is required</span>}
+                {error && <span className='text-red-500 text-sm text-left'>{error.message}</span>}
             </label>
         </div>
     );
