@@ -74,7 +74,7 @@
 html,
 body,
 #__next {
-  @apply h-full w-full;
+  @apply min-h-screen w-full;
 }
 
 :root {

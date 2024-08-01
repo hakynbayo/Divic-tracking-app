@@ -1,18 +1,22 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-
-import "./App.css";
-import React from "react";
-import Login from "./pages/Login";
+// App.tsx
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/auth/PrivateRoute';
+import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

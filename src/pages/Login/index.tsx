@@ -1,21 +1,35 @@
 import React, { useState } from 'react';
-import Logo from '../../components/Logo';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { LuUsers, LuLock, LuEyeOff, LuEye } from "react-icons/lu";
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../../context/AuthContext';
+import Logo from '../../components/Logo';
+import InputField from '../../components/Login/InputField';
+import PasswordField from '../../components/Login/PasswordField';
+import RememberMe from '../../components/Login/Remember';
+import SignInButton from '../../components/Login/FormButton';
+import { LuUsers } from 'react-icons/lu';
 
-const LoginPage = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [showPassword, setShowPassword] = useState(false);
+interface LoginFormInputs {
+    username: string;
+    password: string;
+    rememberMe: boolean;
+}
+
+const LoginPage: React.FC = () => {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<LoginFormInputs>();
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate hook
+
     const username = watch('username');
     const password = watch('password');
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: LoginFormInputs) => {
         setLoading(true);
         try {
-            const response = await fetch('https://shippex-demo.bc.brandimic.com/api/method/login', {
+            const response = await fetch(import.meta.env.VITE_API_URL || '', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,10 +47,12 @@ const LoginPage = () => {
             const result = await response.json();
             console.log(result);
 
-            // Assuming the login is successful, navigate to the home page
+            toast.success('Sign in successful!');
+            login();
             navigate('/home');
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
+            toast.error('Sign in failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -44,70 +60,38 @@ const LoginPage = () => {
 
     return (
         <div className='flex flex-col h-full'>
+            <ToastContainer />
             <div>
                 <Logo />
             </div>
 
-            <div className='w-full flex flex-col justify-center gap-2 items-center my-32'>
+            <div className='w-full flex flex-col justify-center gap-2 items-center min-h-[80vh]'>
                 <h1 className='text-2xl font-bold text-center'>Sign in</h1>
                 <p className='text-gray'>Don’t have an account yet? <span className='text-blue font-semibold'>sign up here</span></p>
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full sm:w-[50%] lg:w-[30%] px-8 lg:px-2 flex flex-col gap-2 items-center mt-2'>
-                    <label className='w-full'>
-                        <p className='font-semibold text-secondary-dark'>Username</p>
-                        <div className='relative flex items-center'>
-                            <LuUsers className='absolute left-3 top-[60%] transform -translate-y-1/2 text-gray-400' />
-                            <input
-                                type='text'
-                                placeholder='ali@brandim|'
-                                {...register('username', { required: true })}
-                                className='border rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
-                            />
-                        </div>
-                        {errors.username && <span className='text-red-500 text-left'>Username is required</span>}
-                    </label>
-
-                    <div className='w-full'>
-                        <label>
-                            <div className='w-full flex justify-between items-center'>
-                                <p className='font-semibold text-secondary-dark'>Password</p>
-                                <Link to='#' className='text-blue m-2 font-semibold'>Forgot Password?</Link>
-                            </div>
-                            <div className='relative flex items-center'>
-                                <LuLock className='absolute left-3 top-[60%] transform -translate-y-1/2 text-gray' />
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder='your password'
-                                    {...register('password', { required: true })}
-                                    className='border rounded-lg border-secondary p-4 pl-10 mt-2 w-full'
-                                />
-                                <div
-                                    className='absolute right-3 top-[60%] transform -translate-y-1/2 cursor-pointer'
-                                    onClick={() => setShowPassword(!showPassword)}
-                                >
-                                    {showPassword ? <LuEyeOff className='text-gray-400' /> : <LuEye className='text-gray-400' />}
-                                </div>
-                            </div>
-                            {errors.password && <span className='text-red-500 text-left'>Password is required</span>}
-                        </label>
-                    </div>
-
-                    <div className='w-full flex items-center'>
-                        <input
-                            type='checkbox'
-                            {...register('rememberMe')}
-                            className='w-[10%] mt-2'
-                        />
-                        <label className='text-secondary-dark font-medium text-base'>Remember me</label>
-                    </div>
-
-                    <button
-                        type='submit'
-                        className={`w-full text-white p-2 m-2 flex justify-center items-center ${!username || !password ? 'bg-light-blue cursor-not-allowed' : 'bg-blue'}`}
+                    <InputField
+                        label="Username"
+                        name="username"
+                        type="text"
+                        placeholder="ali@brandim.com"
+                        register={register}
+                        error={errors.username}
+                        icon={LuUsers}
+                    />
+                    <PasswordField
+                        label="Password"
+                        name="password"
+                        placeholder="your password"
+                        register={register}
+                        error={errors.password}
+                    />
+                    <RememberMe register={register} />
+                    <SignInButton
+                        loading={loading}
                         disabled={!username || !password || loading}
-                    >
-                        {loading && <span className='loader mr-2'></span>}
-                        Sign in
-                    </button>
+                        username={username}
+                        password={password}
+                    />
                 </form>
             </div>
         </div>
